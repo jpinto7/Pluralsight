@@ -18,9 +18,7 @@ export class ProductListComponent implements OnInit {
   products: IProduct[];
   errorMessage: string;
 
-  constructor(private _productService: ProductService) {
-
-  }
+  constructor(private _productService: ProductService) {}
 
   toggleImage(): void {
     this.showImage = !this.showImage;
@@ -34,11 +32,7 @@ export class ProductListComponent implements OnInit {
     this._productService.getProducts().subscribe(this.onSuccess, this.onError);
   }
 
-  private onSuccess = (products: IProduct[]) => {
-    this.products = products;
-  }
+  private onSuccess = (products: IProduct[]) => this.products = products
 
-  private onError = (error: any) => {
-    this.errorMessage = error;
-  }
+  private onError = (error: any) => this.errorMessage = error
 }
