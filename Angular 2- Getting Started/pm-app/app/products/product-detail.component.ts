@@ -22,7 +22,13 @@ export class ProductDetailComponent implements OnInit {
     this._productService.getProduct(id).subscribe(this.onSuccess, this.onError);
   }
 
-  private onSuccess = (product: IProduct) => this.product = product
+  private onSuccess = (product: IProduct) => {
+    if (product) {
+      this.product = product;
+    } else {
+      this._router.navigate(['/products']);
+    }
+  }
 
   private onError = (error: any) => this.errorMessage = error
 
