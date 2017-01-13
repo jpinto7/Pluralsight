@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as courseActions from '../../actions/courseActions';
@@ -9,19 +10,12 @@ class CoursesPage extends Component {
     super(props, context);
   }
 
-  courseRow(course, index) {
-    return(
-      <div key={index}>
-        {course.title}
-      </div>
-    );
-  }
-
   render() {
     const {courses} = this.props;
     return (
       <div>
         <h1>Courses</h1>
+        <Link to="/course" className="btn btn-primary">Add Course</Link>
         <CourseList courses={courses} />
       </div>
     );
