@@ -7,7 +7,8 @@
 import {
   REQUEST_LINKS_SUCCEEDED,
   REQUEST_LINKS_FAILED,
-  REQUEST_LINKS
+  REQUEST_LINKS,
+  START_ADD
 } from './constants';
 
 export const requestLinks = topicName => ({
@@ -23,4 +24,9 @@ export const requestLinksSucceeded = links => ({
 export const requestLinksFailed = message => ({
   type: REQUEST_LINKS_FAILED,
   message
+});
+
+export const startAdd = topicName => ({
+  type: START_ADD,
+  topicName
 });

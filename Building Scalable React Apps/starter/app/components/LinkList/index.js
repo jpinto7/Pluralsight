@@ -5,11 +5,11 @@
 */
 
 import React from 'react';
-
 import Link from '../Link';
+import IconButton from '../IconButton';
 import styles from './styles.css';
 
-function LinkList({ links, topicName }) {
+function LinkList({ links, topicName, children, actions: { startAdd } }) {
   const linkNodes = links.map(l => (
     <Link
       key={l.id}
@@ -22,6 +22,12 @@ function LinkList({ links, topicName }) {
     <div className={styles.linkList}>
       <h1>{topicName}</h1>
       {linkNodes}
+      <IconButton
+        icon="plus"
+        buttonClass={styles.button}
+        iconClass={styles.icon}
+        onClick={() => startAdd(topicName)} />
+      {children}
     </div>
   );
 }
@@ -35,7 +41,11 @@ LinkList.propTypes = {
       id: React.PropTypes.string.isRequired
     })
   ),
-  topicName: React.PropTypes.string.isRequired
+  actions: React.PropTypes.shape({
+    startAdd: React.PropTypes.func.isRequired
+  }),
+  topicName: React.PropTypes.string.isRequired,
+  children: React.PropTypes.element
 };
 
 export default LinkList;
