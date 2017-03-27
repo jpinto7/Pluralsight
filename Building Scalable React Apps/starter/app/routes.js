@@ -99,9 +99,9 @@ export default function createRoutes(store) {
 
                 importModules.catch(errorLoading);
               },
-            }
-          ]
-        }
+            },
+          ],
+        },
       ],
     }, {
       path: '*',
@@ -111,6 +111,6 @@ export default function createRoutes(store) {
           .then(loadModule(cb))
           .catch(errorLoading);
       },
-    }
+    },
   ];
 }

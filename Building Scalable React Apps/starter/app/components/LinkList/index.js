@@ -15,7 +15,8 @@ function LinkList({ links, topicName, children, actions: { startAdd } }) {
       key={l.id}
       url={l.url}
       description={l.description}
-      voteCount={l.voteCount}/>
+      voteCount={l.voteCount}
+    />
   ));
 
   return (
@@ -26,7 +27,8 @@ function LinkList({ links, topicName, children, actions: { startAdd } }) {
         icon="plus"
         buttonClass={styles.button}
         iconClass={styles.icon}
-        onClick={() => startAdd(topicName)} />
+        onClick={() => startAdd(topicName)}
+      />
       {children}
     </div>
   );
@@ -38,14 +40,14 @@ LinkList.propTypes = {
       voteCount: React.PropTypes.number.isRequired,
       description: React.PropTypes.string.isRequired,
       url: React.PropTypes.string.isRequired,
-      id: React.PropTypes.string.isRequired
+      id: React.PropTypes.string.isRequired,
     })
   ),
   actions: React.PropTypes.shape({
-    startAdd: React.PropTypes.func.isRequired
+    startAdd: React.PropTypes.func.isRequired,
   }),
   topicName: React.PropTypes.string.isRequired,
-  children: React.PropTypes.element
+  children: React.PropTypes.element,
 };
 
 export default LinkList;

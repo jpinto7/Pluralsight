@@ -14,9 +14,9 @@ export class LinkListContainer extends React.Component { // eslint-disable-line 
   static propTypes = {
     actions: React.PropTypes.shape({
       requestLinks: React.PropTypes.func.isRequired,
-      startAdd: React.PropTypes.func.isRequired
+      startAdd: React.PropTypes.func.isRequired,
     }),
-    topicName: React.PropTypes.string.isRequired
+    topicName: React.PropTypes.string.isRequired,
   }
 
   componentWillMount() {
@@ -42,8 +42,8 @@ function mapDispatchToProps(dispatch) {
   return {
     actions: {
       requestLinks: (topicName) => dispatch(requestLinks(topicName)),
-      startAdd: (topicName) => dispatch(startAdd(topicName))
-    }
+      startAdd: (topicName) => dispatch(startAdd(topicName)),
+    },
   };
 }
 
