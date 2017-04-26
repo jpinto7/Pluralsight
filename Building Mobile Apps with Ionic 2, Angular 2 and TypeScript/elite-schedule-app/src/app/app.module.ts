@@ -1,10 +1,13 @@
 import { NgModule, ErrorHandler } from '@angular/core';
+import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import {
   TeamsPage,
+  TeamHomePage,
   TournamentsPage,
   TeamDetailPage,
+  StandingsPage,
   GamePage,
   MyTeamsPage
 } from '../pages/pages';
@@ -17,11 +20,14 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     MyApp,
     MyTeamsPage,
     TeamsPage,
+    TeamHomePage,
     TournamentsPage,
     TeamDetailPage,
+    StandingsPage,
     GamePage
   ],
   imports: [
+    HttpModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -29,8 +35,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     MyApp,
     MyTeamsPage,
     TeamsPage,
+    TeamHomePage,
     TournamentsPage,
     TeamDetailPage,
+    StandingsPage,
     GamePage
   ],
   providers: [

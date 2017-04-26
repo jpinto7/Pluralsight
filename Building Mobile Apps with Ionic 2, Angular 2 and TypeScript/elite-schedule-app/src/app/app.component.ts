@@ -3,10 +3,15 @@ import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { EliteApi } from '../shared/shared';
+
 import { MyTeamsPage, TournamentsPage } from '../pages/pages';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [
+    EliteApi
+  ]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
