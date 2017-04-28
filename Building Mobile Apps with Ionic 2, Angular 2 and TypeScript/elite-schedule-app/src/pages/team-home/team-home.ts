@@ -7,13 +7,13 @@ import {
 } from '../pages';
 
 @Component({
-  selector: 'page-team-home',
   templateUrl: 'team-home.html'
 })
 export class TeamHomePage {
+
   private team: any = {};
-  private teamDetailTab: any = TeamDetailPage;
-  private standingsTab: any = StandingsPage;
+  teamDetailTab: any = TeamDetailPage;
+  standingsTab: any = StandingsPage;
 
   constructor(private navCtrl: NavController,
               private navParams: NavParams) {

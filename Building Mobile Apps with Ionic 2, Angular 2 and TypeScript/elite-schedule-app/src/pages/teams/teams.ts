@@ -6,46 +6,58 @@ import { TeamHomePage } from '../pages';
 import { EliteApi } from '../../shared/shared';
 
 @Component({
-  selector: 'page-teams',
-  templateUrl: 'teams.html'
+  templateUrl: 'teams.html',
 })
 export class TeamsPage {
 
-  private teams: any[] = [];
   private allTeamDivisions: any[] = [];
-  private showTeamDivisions: boolean = false;
+  private teams: any[] = [];
+  private queryText: String = '';
 
-  constructor(private navCtrl: NavController,
-              private loadingCtrl: LoadingController,
+  constructor(private loadingCtrl: LoadingController,
+              private navCtrl: NavController,
               private navParams: NavParams,
               private eliteApi: EliteApi) {}
 
-  itemTapped(event, team) {
+  itemTapped($event, team){
     this.navCtrl.push(TeamHomePage, team);
   }
 
-  ionViewDidLoad() {
+  updateTeams() {
+    let queryTextLower = this.queryText.toLowerCase();
+    let filteredTeams = [];
+    _.forEach(this.allTeamDivisions, td => {
+      let teams = _.filter(td.divisionTeams, t => (<any>t).name.toLowerCase().includes(queryTextLower));
+      if (teams.length) {
+        filteredTeams.push({ divisionName: td.divisionName, divisionTeams: teams });
+      }
+    });
+    this.teams = filteredTeams;
+  }
+
+  ionViewDidLoad(){
     let selectedTournament = this.navParams.data;
     let loader = this.loadingCtrl.create({
-      content: 'Getting teams...',
+      content: 'Getting teams...'
     });
-    loader.present()
-      .then(() => {
-        this.eliteApi.getTournamentData(selectedTournament.id)
-          .subscribe(tournament => {
-            this.allTeamDivisions = _(tournament.teams)
-                                    .groupBy('division')
-                                    .toPairs()
-                                    .map(team => _.zipObject(['divisionName', 'divisionTeams'], team))
-                                    .value();
-            loader.dismiss();
-            this.showTeamDivisions = true;
-          });
+
+    loader.present().then(() => {
+      this.eliteApi.getTournamentData(selectedTournament.id)
+        .subscribe(handleSuccess, handleError);
       });
 
-    this.eliteApi.getTournamentData(selectedTournament.id)
-      .subscribe(tournament => {
-        this.teams = tournament.teams;
-      });
+    const handleSuccess = ({ teams }) => {
+      this.allTeamDivisions = _(teams)
+        .groupBy('division')
+        .toPairs()
+        .map(item => _.zipObject(['divisionName', 'divisionTeams'], item))
+        .value();
+      this.teams = this.allTeamDivisions;
+      loader.dismiss();
+    };
+
+    const handleError = error => {
+      loader.dismiss();
+    };
   }
 }

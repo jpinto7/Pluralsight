@@ -1,5 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
+import { IonicStorageModule } from '@ionic/storage';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import {
@@ -15,6 +16,8 @@ import {
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { EliteApi, UserSettings } from '../shared/shared';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -28,7 +31,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   ],
   imports: [
     HttpModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -42,9 +46,12 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     GamePage
   ],
   providers: [
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    EliteApi,
+    Storage,
+    UserSettings
   ]
 })
 export class AppModule {}

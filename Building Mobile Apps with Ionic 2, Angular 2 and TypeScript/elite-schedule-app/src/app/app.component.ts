@@ -1,25 +1,28 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Events, Nav, Platform, LoadingController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
-import { EliteApi } from '../shared/shared';
+import { EliteApi, UserSettings } from '../shared/shared';
 
-import { MyTeamsPage, TournamentsPage } from '../pages/pages';
+import { MyTeamsPage, TeamHomePage, TournamentsPage } from '../pages/pages';
 
 @Component({
-  templateUrl: 'app.html',
-  providers: [
-    EliteApi
-  ]
+  templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
+  private favoriteTeams: any[] = [];
   private rootPage: any = MyTeamsPage;
-  private pages: Array<{title: string, component: any}> = [];
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(private platform: Platform,
+              private statusBar: StatusBar,
+              private loadingCtrl: LoadingController,
+              private splashScreen: SplashScreen,
+              private eliteApi: EliteApi,
+              private userSettings: UserSettings,
+              private events: Events) {
     this.initializeApp();
   }
 
@@ -29,6 +32,10 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.refreshFavorites();
+      this.events.subscribe('favorites:changed', () => {
+        this.refreshFavorites();
+      });
     });
   }
 
@@ -38,7 +45,21 @@ export class MyApp {
     }
   }
 
+  goToTeam({ tournamentId, team }){
+    let loader = this.loadingCtrl.create({
+      content: 'Getting data...',
+      dismissOnPageChange: true
+    });
+    loader.present();
+    this.eliteApi.getTournamentData(tournamentId)
+      .subscribe(l => this.nav.push(TeamHomePage, team));
+  }
+
   goToTournaments() {
     this.nav.push(TournamentsPage);
+  }
+
+  refreshFavorites() {
+    this.favoriteTeams = this.userSettings.getAllFavorites();
   }
 }

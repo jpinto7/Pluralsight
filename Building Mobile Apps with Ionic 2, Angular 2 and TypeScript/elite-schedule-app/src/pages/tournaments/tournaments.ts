@@ -5,7 +5,6 @@ import { TeamsPage } from '../pages';
 import { EliteApi } from '../../shared/shared';
 
 @Component({
-  selector: 'page-tournaments',
   templateUrl: 'tournaments.html'
 })
 export class TournamentsPage {
@@ -24,13 +23,18 @@ export class TournamentsPage {
     let loader = this.loadingCtrl.create({
       content: 'Getting tournaments...',
     });
-    loader.present()
-      .then(() => {
-        this.eliteApi.getTournaments()
-          .subscribe(tournaments => {
-            this.tournaments = tournaments;
-            loader.dismiss();
-          });
+    loader.present().then(() => {
+      this.eliteApi.getTournaments()
+          .subscribe(handleSuccess, handleError)
       });
+
+    const handleSuccess = tournaments => {
+      this.tournaments = tournaments;
+      loader.dismiss();
+    }
+
+    const handleError = error => {
+      loader.dismiss();
+    }
   }
 }

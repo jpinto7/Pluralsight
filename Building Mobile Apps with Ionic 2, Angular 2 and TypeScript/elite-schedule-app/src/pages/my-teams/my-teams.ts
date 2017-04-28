@@ -3,7 +3,7 @@ import { LoadingController, NavController } from 'ionic-angular';
 
 import { TeamHomePage, TournamentsPage } from '../pages';
 
-import { EliteApi } from '../../shared/shared';
+import { EliteApi, UserSettings } from '../../shared/shared';
 
 @Component({
   selector: 'page-my-teams',
@@ -15,23 +15,28 @@ export class MyTeamsPage {
 
   constructor(private navCtrl: NavController,
               private loadingCtrl: LoadingController,
-              private eliteApi: EliteApi) {}
+              private eliteApi: EliteApi,
+              private userSettings: UserSettings) {}
 
   goToTournaments() {
     this.navCtrl.push(TournamentsPage);
   }
 
-  favoriteTapped(event, favorite) {
+  favoriteTapped(event, { team, tournamentId }) {
     let loader = this.loadingCtrl.create({
       content: 'Getting data...',
       dismissOnPageChange: true
     });
     loader.present()
       .then(() => {
-        this.eliteApi.getTournamentData(favorite.tournamentId)
+        this.eliteApi.getTournamentData(tournamentId)
           .subscribe(tournament => {
-            this.navCtrl.push(TeamHomePage, favorite.team);
+            this.navCtrl.push(TeamHomePage, team);
           });
       });
+  }
+
+  ionViewDidEnter() {
+    this.favorites = this.userSettings.getAllFavorites();
   }
 }
