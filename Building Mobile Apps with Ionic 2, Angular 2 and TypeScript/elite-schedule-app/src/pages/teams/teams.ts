@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { LoadingController, NavController, NavParams } from 'ionic-angular';
+import _ from 'lodash';
 
 import { TeamHomePage } from '../pages';
+import { EliteApi } from '../../shared/shared';
 
 @Component({
   selector: 'page-teams',
@@ -9,19 +11,41 @@ import { TeamHomePage } from '../pages';
 })
 export class TeamsPage {
 
-  teams = [
-    { id: 1, name: 'HC Elite' },
-    { id: 2, name: 'Team Takeover' },
-    { id: 3, name: 'DC Thunder' }
-  ];
+  private teams: any[] = [];
+  private allTeamDivisions: any[] = [];
+  private showTeamDivisions: boolean = false;
 
-  constructor(private nav: NavController, public navParams: NavParams) {}
+  constructor(private navCtrl: NavController,
+              private loadingCtrl: LoadingController,
+              private navParams: NavParams,
+              private eliteApi: EliteApi) {}
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad TeamsPage');
+  itemTapped(event, team) {
+    this.navCtrl.push(TeamHomePage, team);
   }
 
-  itemTapped($event, team) {
-    this.nav.push(TeamHomePage, team);
+  ionViewDidLoad() {
+    let selectedTournament = this.navParams.data;
+    let loader = this.loadingCtrl.create({
+      content: 'Getting teams...',
+    });
+    loader.present()
+      .then(() => {
+        this.eliteApi.getTournamentData(selectedTournament.id)
+          .subscribe(tournament => {
+            this.allTeamDivisions = _(tournament.teams)
+                                    .groupBy('division')
+                                    .toPairs()
+                                    .map(team => _.zipObject(['divisionName', 'divisionTeams'], team))
+                                    .value();
+            loader.dismiss();
+            this.showTeamDivisions = true;
+          });
+      });
+
+    this.eliteApi.getTournamentData(selectedTournament.id)
+      .subscribe(tournament => {
+        this.teams = tournament.teams;
+      });
   }
 }
