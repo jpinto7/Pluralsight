@@ -1,54 +1,43 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { IonicStorageModule } from '@ionic/storage';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { AgmCoreModule } from 'angular2-google-maps/core';
 import { MyApp } from './app.component';
-import {
-  TeamsPage,
-  TeamHomePage,
-  TournamentsPage,
-  TeamDetailPage,
-  StandingsPage,
-  GamePage,
-  MyTeamsPage
-} from '../pages/pages';
-
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-
+import { GamePage, MapPage, MyTeamsPage, StandingsPage, TeamDetailPage, TeamHomePage, TeamsPage, TournamentsPage } from '../pages/pages';
 import { EliteApi, UserSettings } from '../shared/shared';
 
 @NgModule({
   declarations: [
     MyApp,
+    GamePage,
+    MapPage,
     MyTeamsPage,
-    TeamsPage,
-    TeamHomePage,
-    TournamentsPage,
-    TeamDetailPage,
     StandingsPage,
-    GamePage
+    TeamDetailPage,
+    TeamHomePage,
+    TeamsPage,
+    TournamentsPage
   ],
   imports: [
-    HttpModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    HttpModule,
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyBcKjjQCkcBgen_jwEqj7Q2liI6h3Pv8CU'})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    GamePage,
+    MapPage,
     MyTeamsPage,
-    TeamsPage,
-    TeamHomePage,
-    TournamentsPage,
-    TeamDetailPage,
     StandingsPage,
-    GamePage
+    TeamDetailPage,
+    TeamHomePage,
+    TeamsPage,
+    TournamentsPage
   ],
   providers: [
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    StatusBar,
-    SplashScreen,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     EliteApi,
     Storage,
     UserSettings
