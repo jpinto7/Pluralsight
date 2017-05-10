@@ -22,7 +22,7 @@ import { EliteApi, UserSettings } from '../shared/shared';
   imports: [
     IonicModule.forRoot(MyApp),
     HttpModule,
-    AgmCoreModule.forRoot({ apiKey: 'AIzaSyBcKjjQCkcBgen_jwEqj7Q2liI6h3Pv8CU'})
+    AgmCoreModule.forRoot({ apiKey: ''})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
